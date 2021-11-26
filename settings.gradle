@@ -1,0 +1,3 @@
+rootProject.name = "ServiceLib"
+include ':app'
+include ':servicelib'
