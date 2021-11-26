@@ -49,7 +49,6 @@ class ServiceModule(var context: Context) {
     }
 
     @Provides
-    @Singleton
     fun provideEndPoints(): ServiceEndPoints {
         return provideRetrofitInstance(
             provideHttpClient()
