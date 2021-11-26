@@ -91,6 +91,7 @@ def libraryGroupId = 'mx.test.android.gonet'
 def libraryArtifactId = 'servicelib'
 def libraryVersion = '1.0.0'
 
+/*
 publishing {
     publications {
         aar(MavenPublication) {
@@ -99,6 +100,18 @@ publishing {
             artifactId libraryArtifactId
 
             artifact("$buildDir/outputs/aar/${artifactId}-release.aar")
+        }
+    }
+}*/
+afterEvaluate {
+    publishing{
+        publications{
+            release(MavenPublication){
+                from components.release
+                groupId libraryGroupId
+                version libraryVersion
+                artifactId libraryArtifactId
+            }
         }
     }
 }
