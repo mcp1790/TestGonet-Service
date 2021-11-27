@@ -11,7 +11,7 @@ object ListMoviesConverter : IConverter<ListMoviesResponseEntity, ListMoviesMode
                 totalPages = entity.total_pages ?: -1,
                 totalResults = entity.total_results ?: -1,
                 page = entity.page ?: -1,
-                dates = entity.dates?.map { DatesConverter.entityToModel(it) } ?: listOf()
+                dates = DatesConverter.entityToModel(entity.dates)
             )
         } ?: ListMoviesModel()
     }

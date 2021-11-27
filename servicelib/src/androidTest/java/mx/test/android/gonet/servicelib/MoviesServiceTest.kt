@@ -65,8 +65,8 @@ class MoviesServiceTest: BaseServiceTest() {
     @Throws(InterruptedException::class)
     fun moviesListTest() {
         moviesService.listOfMovies(
-            flow = FlowEnum.MoviesRecommendation,
-            idRecommended = "500",
+            flow = FlowEnum.MoviesUpcoming,
+            idRecommended = "",
             page = 1
         ).subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())

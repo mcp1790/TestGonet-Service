@@ -12,7 +12,7 @@ open class BaseResponse {
     var page: Int? = -1
     var total_pages: Int? = -1
     var total_results: Int? = -1
-    var dates: List<DatesEntity>? = listOf()
+    var dates: DatesEntity? = null
 
     override fun toString(): String {
         return GsonBuilder().disableHtmlEscaping().create().toJson(this)
