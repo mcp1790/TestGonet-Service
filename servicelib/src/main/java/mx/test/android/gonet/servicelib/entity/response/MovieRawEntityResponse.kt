@@ -12,6 +12,7 @@ class MovieRawEntityResponse: BaseResponse() {
     var backdrop_path: String? = ""
     var budget: Int? = -1
     var genre_ids: List<Int>? = listOf()
+    var genres: List<GenreEntity>? = listOf()
     var homepage: String? = ""
     var id: Int? = -1
     var imdb_id: String? = ""

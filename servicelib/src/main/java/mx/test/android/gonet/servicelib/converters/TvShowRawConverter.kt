@@ -8,13 +8,17 @@ object TvShowRawConverter: IConverter<TvShowRawResponseEntity, TvShowRawModel> {
     override fun entityToModel(entityIn: TvShowRawResponseEntity?): TvShowRawModel {
 
         return entityIn?.let { entity ->
-            val genresList = arrayListOf<GenreModel>()
-            entity.genre_ids?.forEach {
-                genresList.add(
-                    GenreModel().apply {
-                        id = it
-                    }
-                )
+            var genresList = arrayListOf<GenreModel>()
+            if (entity.genre_ids?.isNotEmpty()!!){
+                entity.genre_ids?.forEach {
+                    genresList.add(
+                        GenreModel().apply {
+                            id = it
+                        }
+                    )
+                }
+            } else {
+                genresList = entity.genres?.map { GenreConverter.entityToModel(it) }?.toCollection(ArrayList()) ?: arrayListOf()
             }
             TvShowRawModel(
                 backdropPath = entity.backdrop_path ?: "",

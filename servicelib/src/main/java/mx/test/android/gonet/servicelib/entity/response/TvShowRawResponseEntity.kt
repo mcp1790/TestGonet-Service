@@ -8,6 +8,7 @@ class TvShowRawResponseEntity: BaseResponse()  {
     var backdrop_path: String? = ""
     var first_air_date: String? = ""
     var genre_ids: List<Int>? = listOf()
+    var genres: List<GenreEntity>? = listOf()
     var id: Int? = -1
     var name: String? = ""
     var origin_country: List<String>? = listOf()
