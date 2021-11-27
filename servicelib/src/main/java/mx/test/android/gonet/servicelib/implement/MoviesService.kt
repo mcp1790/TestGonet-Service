@@ -27,7 +27,8 @@ class MoviesService @Inject constructor(var context: Context) : BaseService(cont
             val map: HashMap<String, Any?> = hashMapOf()
             map["api_key"] = apiKey
 
-            val urlMovieDetails= FlowEnum.MovieDetails.url(context = context).plus("/$movieId").plus(this.urlEncodeUTF8(map))
+            val urlMovieDetails = FlowEnum.MovieDetails.url(context = context).plus("/$movieId")
+                .plus(this.urlEncodeUTF8(map))
 
             this.service.getRequest(
                 url = urlMovieDetails
@@ -53,7 +54,8 @@ class MoviesService @Inject constructor(var context: Context) : BaseService(cont
             val map: HashMap<String, Any?> = hashMapOf()
             map["api_key"] = apiKey
 
-            val urlMovieDetails= FlowEnum.MoviesLatest.url(context = context).plus(this.urlEncodeUTF8(map))
+            val urlMovieDetails =
+                FlowEnum.MoviesLatest.url(context = context).plus(this.urlEncodeUTF8(map))
 
             this.service.getRequest(
                 url = urlMovieDetails
@@ -74,7 +76,11 @@ class MoviesService @Inject constructor(var context: Context) : BaseService(cont
         }
     }
 
-    fun listOfMovies(flow: FlowEnum, idRecommended: String, page: Int): Observable<ListMoviesModel>{
+    fun listOfMovies(
+        flow: FlowEnum,
+        idRecommended: String,
+        page: Int,
+    ): Observable<ListMoviesModel> {
         return Observable.unsafeCreate { subscriber ->
             val map: HashMap<String, Any?> = hashMapOf()
             map["api_key"] = apiKey
@@ -99,7 +105,7 @@ class MoviesService @Inject constructor(var context: Context) : BaseService(cont
         }
     }
 
-    fun listOfMoviesGenres(): Observable<List<GenreModel>>{
+    fun listOfMoviesGenres(): Observable<List<GenreModel>> {
         return Observable.unsafeCreate { subscriber ->
             val map: HashMap<String, Any?> = hashMapOf()
             map["api_key"] = apiKey
@@ -114,7 +120,9 @@ class MoviesService @Inject constructor(var context: Context) : BaseService(cont
                             GenresResponseEntity::class.java
                         )
 
-                        subscriber.onNext(entityResponse.genres?.map { GenreConverter.entityToModel(it) })
+                        subscriber.onNext(entityResponse.genres?.map {
+                            GenreConverter.entityToModel(it)
+                        })
                     } ?: subscriber.onError(Throwable(genericMessageNullResponse))
                 }, { error ->
                     subscriber.onError(Throwable(error.localizedMessage))

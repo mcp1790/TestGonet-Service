@@ -7,7 +7,7 @@ import mx.test.android.gonet.servicelib.entity.response.child.GenreEntity
 class TvShowRawResponseEntity: BaseResponse()  {
     var backdrop_path: String? = ""
     var first_air_date: String? = ""
-    var genres: List<GenreEntity>? = listOf()
+    var genre_ids: List<Int>? = listOf()
     var id: Int? = -1
     var name: String? = ""
     var origin_country: List<String>? = listOf()

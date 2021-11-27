@@ -1,16 +1,25 @@
 package mx.test.android.gonet.servicelib.converters
 
 import mx.test.android.gonet.domainlib.models.MovieRawModel
+import mx.test.android.gonet.domainlib.models.child.GenreModel
 import mx.test.android.gonet.servicelib.entity.response.MovieRawEntityResponse
 
 object MovieRawConverter : IConverter<MovieRawEntityResponse, MovieRawModel> {
     override fun entityToModel(entityIn: MovieRawEntityResponse?): MovieRawModel {
         return entityIn?.let { entity ->
+            val genresList = arrayListOf<GenreModel>()
+            entity.genre_ids?.forEach {
+                genresList.add(
+                    GenreModel().apply {
+                        id = it
+                    }
+                )
+            }
             MovieRawModel(
                 adult = entity.adult ?: false,
                 backdropPath = entity.backdrop_path ?: "",
                 budget = entity.budget ?: -1,
-                genres = entity.genres?.map { GenreConverter.entityToModel(it) } ?: listOf(),
+                genres = genresList.toList(),
                 homepage = entity.homepage ?: "",
                 id = entity.id ?: -1,
                 imdbId = entity.imdb_id ?: "",
