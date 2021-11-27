@@ -2,6 +2,7 @@ package mx.test.android.gonet.servicelib.entity.response
 
 import com.google.gson.GsonBuilder
 import kotlinx.serialization.Serializable
+import mx.test.android.gonet.servicelib.entity.response.child.DatesEntity
 
 @Serializable
 open class BaseResponse {
@@ -11,6 +12,7 @@ open class BaseResponse {
     var page: Int? = -1
     var total_pages: Int? = -1
     var total_results: Int? = -1
+    var dates: List<DatesEntity>? = listOf()
 
     override fun toString(): String {
         return GsonBuilder().disableHtmlEscaping().create().toJson(this)

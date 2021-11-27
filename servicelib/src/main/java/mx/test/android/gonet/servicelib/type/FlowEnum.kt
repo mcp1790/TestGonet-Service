@@ -4,9 +4,15 @@ enum class FlowEnum{
     MovieDetails,
     MoviesTopRated,
     MoviesPopular,
+    MoviesLatest,
+    MoviesUpcoming,
     MoviesRecommendation,
+    MoviesGenres,
     TvShowDetails,
+    TvShowLatest,
     TvShowsTopRated,
     TvShowsPopular,
-    TvShowsRecommendation
+    TvShowsRecommendation,
+    TvShowsOnAir,
+    TvShowGenres
 }

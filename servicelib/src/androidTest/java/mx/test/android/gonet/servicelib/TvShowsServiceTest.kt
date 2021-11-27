@@ -28,9 +28,43 @@ class TvShowsServiceTest: BaseServiceTest() {
 
     @Test(timeout = 3000000)
     @Throws(InterruptedException::class)
+    fun tvShowLatestTest() {
+        tvShowsService.tvShowLatest()
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.io())
+            .subscribe({
+                TestCase.assertTrue(true)
+
+                synchronized(_syncObject) { _syncObject.notify() }
+            },{
+                Assert.fail("error.localizedMessage")
+
+                synchronized(_syncObject) { _syncObject.notify() }
+            })
+    }
+
+    @Test(timeout = 3000000)
+    @Throws(InterruptedException::class)
+    fun tvShowGenresTest() {
+        tvShowsService.listOfTvShowGenres()
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.io())
+            .subscribe({
+                TestCase.assertTrue(true)
+
+                synchronized(_syncObject) { _syncObject.notify() }
+            },{
+                Assert.fail("error.localizedMessage")
+
+                synchronized(_syncObject) { _syncObject.notify() }
+            })
+    }
+
+    @Test(timeout = 3000000)
+    @Throws(InterruptedException::class)
     fun moviesListTest() {
         tvShowsService.listOfTvShows(
-            flow = FlowEnum.TvShowsTopRated,
+            flow = FlowEnum.TvShowsPopular,
             idRecommended = "500",
             page = 1
         ).subscribeOn(Schedulers.io())

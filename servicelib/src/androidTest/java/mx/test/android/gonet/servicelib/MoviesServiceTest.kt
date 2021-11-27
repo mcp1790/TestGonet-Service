@@ -28,6 +28,41 @@ class MoviesServiceTest: BaseServiceTest() {
 
     @Test(timeout = 3000000)
     @Throws(InterruptedException::class)
+    fun movieLatestTest() {
+        moviesService.movieLatest()
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.io())
+            .subscribe({
+                TestCase.assertTrue(true)
+
+                synchronized(_syncObject) { _syncObject.notify() }
+            },{
+                Assert.fail("error.localizedMessage")
+
+                synchronized(_syncObject) { _syncObject.notify() }
+            })
+    }
+
+    @Test(timeout = 3000000)
+    @Throws(InterruptedException::class)
+    fun moviesGenresTest() {
+        moviesService.listOfMoviesGenres()
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.io())
+            .subscribe({
+                TestCase.assertTrue(true)
+
+                synchronized(_syncObject) { _syncObject.notify() }
+            },{
+                Assert.fail("error.localizedMessage")
+
+                synchronized(_syncObject) { _syncObject.notify() }
+            })
+    }
+
+
+    @Test(timeout = 3000000)
+    @Throws(InterruptedException::class)
     fun moviesListTest() {
         moviesService.listOfMovies(
             flow = FlowEnum.MoviesRecommendation,

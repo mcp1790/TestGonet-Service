@@ -8,8 +8,11 @@ import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import mx.test.android.gonet.domainlib.models.ListMoviesModel
 import mx.test.android.gonet.domainlib.models.MovieRawModel
+import mx.test.android.gonet.domainlib.models.child.GenreModel
+import mx.test.android.gonet.servicelib.converters.GenreConverter
 import mx.test.android.gonet.servicelib.converters.ListMoviesConverter
 import mx.test.android.gonet.servicelib.converters.MovieRawConverter
+import mx.test.android.gonet.servicelib.entity.response.GenresResponseEntity
 import mx.test.android.gonet.servicelib.entity.response.ListMoviesResponseEntity
 import mx.test.android.gonet.servicelib.entity.response.MovieRawEntityResponse
 import mx.test.android.gonet.servicelib.type.FlowEnum
@@ -25,6 +28,32 @@ class MoviesService @Inject constructor(var context: Context) : BaseService(cont
             map["api_key"] = apiKey
 
             val urlMovieDetails= FlowEnum.MovieDetails.url(context = context).plus("/$movieId").plus(this.urlEncodeUTF8(map))
+
+            this.service.getRequest(
+                url = urlMovieDetails
+            )?.subscribeOn(Schedulers.io())
+                ?.observeOn(Schedulers.io())
+                ?.subscribe({ response ->
+                    response?.let { responseRaw ->
+                        val entityResponse = Gson().fromJson(
+                            Gson().toJson(responseRaw),
+                            MovieRawEntityResponse::class.java
+                        )
+
+                        subscriber.onNext(MovieRawConverter.entityToModel(entityResponse))
+                    } ?: subscriber.onError(Throwable(genericMessageNullResponse))
+                }, { error ->
+                    subscriber.onError(Throwable(error.localizedMessage))
+                })
+        }
+    }
+
+    fun movieLatest(): Observable<MovieRawModel> {
+        return Observable.unsafeCreate { subscriber ->
+            val map: HashMap<String, Any?> = hashMapOf()
+            map["api_key"] = apiKey
+
+            val urlMovieDetails= FlowEnum.MoviesLatest.url(context = context).plus(this.urlEncodeUTF8(map))
 
             this.service.getRequest(
                 url = urlMovieDetails
@@ -63,6 +92,29 @@ class MoviesService @Inject constructor(var context: Context) : BaseService(cont
                         )
 
                         subscriber.onNext(ListMoviesConverter.entityToModel(entityResponse))
+                    } ?: subscriber.onError(Throwable(genericMessageNullResponse))
+                }, { error ->
+                    subscriber.onError(Throwable(error.localizedMessage))
+                })
+        }
+    }
+
+    fun listOfMoviesGenres(): Observable<List<GenreModel>>{
+        return Observable.unsafeCreate { subscriber ->
+            val map: HashMap<String, Any?> = hashMapOf()
+            map["api_key"] = apiKey
+            this.service.getRequest(
+                url = FlowEnum.MoviesGenres.url(context = context).plus(this.urlEncodeUTF8(map))
+            )?.subscribeOn(Schedulers.io())
+                ?.observeOn(Schedulers.io())
+                ?.subscribe({ response ->
+                    response?.let { responseRaw ->
+                        val entityResponse = Gson().fromJson(
+                            Gson().toJson(responseRaw),
+                            GenresResponseEntity::class.java
+                        )
+
+                        subscriber.onNext(entityResponse.genres?.map { GenreConverter.entityToModel(it) })
                     } ?: subscriber.onError(Throwable(genericMessageNullResponse))
                 }, { error ->
                     subscriber.onError(Throwable(error.localizedMessage))

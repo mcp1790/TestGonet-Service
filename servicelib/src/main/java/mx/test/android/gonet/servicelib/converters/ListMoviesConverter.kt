@@ -10,7 +10,8 @@ object ListMoviesConverter : IConverter<ListMoviesResponseEntity, ListMoviesMode
                 results = entity.results?.map { MovieRawConverter.entityToModel(it) } ?: listOf(),
                 totalPages = entity.total_pages ?: -1,
                 totalResults = entity.total_results ?: -1,
-                page = entity.total_pages ?: -1
+                page = entity.page ?: -1,
+                dates = entity.dates?.map { DatesConverter.entityToModel(it) } ?: listOf()
             )
         } ?: ListMoviesModel()
     }

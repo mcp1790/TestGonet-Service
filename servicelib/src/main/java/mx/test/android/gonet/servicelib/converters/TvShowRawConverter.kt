@@ -1,15 +1,24 @@
 package mx.test.android.gonet.servicelib.converters
 
 import mx.test.android.gonet.domainlib.models.TvShowRawModel
+import mx.test.android.gonet.domainlib.models.child.GenreModel
 import mx.test.android.gonet.servicelib.entity.response.TvShowRawResponseEntity
 
 object TvShowRawConverter: IConverter<TvShowRawResponseEntity, TvShowRawModel> {
     override fun entityToModel(entityIn: TvShowRawResponseEntity?): TvShowRawModel {
+
         return entityIn?.let { entity ->
+            val genresList = arrayListOf<GenreModel>()
+            entity.genre_ids?.forEach {
+                genresList.add(GenreModel(
+                    id = it,
+                    name = ""
+                ))
+            }
             TvShowRawModel(
                 backdropPath = entity.backdrop_path ?: "",
                 firstAirDate = entity.first_air_date ?: "",
-                genreids = entity.genre_ids ?: listOf(),
+                genres = genresList,
                 id = entity.id ?: -1,
                 name = entity.name ?: "",
                 originCountry = entity.origin_country ?: listOf(),
@@ -19,7 +28,8 @@ object TvShowRawConverter: IConverter<TvShowRawResponseEntity, TvShowRawModel> {
                 popularity = entity.popularity ?: -1.0,
                 posterPath = entity.poster_path ?: "",
                 voteAverage = entity.vote_average ?: -1.0,
-                voteCount = entity.vote_count ?: -1
+                voteCount = entity.vote_count ?: -1,
+
             )
         } ?: TvShowRawModel()
     }

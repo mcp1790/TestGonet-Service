@@ -12,7 +12,7 @@ object ListTvShowConverter : IConverter<ListTvShowsResponseEntity, ListTvShowsMo
                 results = entity.results?.map { TvShowRawConverter.entityToModel(it) } ?: listOf(),
                 totalPages = entity.total_pages ?: -1,
                 totalResults = entity.total_results ?: -1,
-                page = entity.total_pages ?: -1
+                page = entity.page ?: -1
             )
         } ?: ListTvShowsModel()
     }
