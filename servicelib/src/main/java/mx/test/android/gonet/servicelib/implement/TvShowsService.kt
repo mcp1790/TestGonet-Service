@@ -6,10 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
-import mx.test.android.gonet.domainlib.models.ListMoviesModel
-import mx.test.android.gonet.domainlib.models.ListTvShowsModel
-import mx.test.android.gonet.domainlib.models.MovieRawModel
-import mx.test.android.gonet.domainlib.models.TvShowRawModel
+import mx.test.android.gonet.domainlib.models.*
 import mx.test.android.gonet.domainlib.models.child.GenreModel
 import mx.test.android.gonet.servicelib.converters.*
 import mx.test.android.gonet.servicelib.entity.response.*
@@ -21,7 +18,7 @@ import javax.inject.Inject
 @SuppressLint("CheckResult")
 class TvShowsService @Inject constructor(var context: Context) : BaseService(context) {
 
-    fun tvShowDetails(tvShowId: String): Observable<TvShowRawModel> {
+    fun tvShowDetails(tvShowId: String): Observable<TvShowDetailModel> {
         return Observable.unsafeCreate { subscriber ->
             val map: HashMap<String, Any?> = hashMapOf()
             map["api_key"] = apiKey
@@ -34,10 +31,10 @@ class TvShowsService @Inject constructor(var context: Context) : BaseService(con
                     response?.let { responseRaw ->
                         val entityResponse = Gson().fromJson(
                             Gson().toJson(responseRaw),
-                            TvShowRawResponseEntity::class.java
+                            TvShowDetailResponseEntity::class.java
                         )
 
-                        subscriber.onNext(TvShowRawConverter.entityToModel(entityResponse))
+                        subscriber.onNext(TvShowDetailConverter.entityToModel(entityResponse))
                     } ?: subscriber.onError(Throwable(genericMessageNullResponse))
                 }, { error ->
                     subscriber.onError(Throwable(error.localizedMessage))
